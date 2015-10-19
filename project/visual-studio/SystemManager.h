@@ -2,13 +2,13 @@
 [] SystemManager.h
 - Memory management.
 - Customized scanf to input inteager value.
-- After 'createEngine' or 'createHistoryRecorder' is called, 'freeMemory' must be called to free allocated memory.
+- After 'createEngine' or 'createSentenceManager' is called, 'freeMemory' must be called to free allocated memory.
 *******************************************************************************************************/
 
 #pragma once
 
 #include "Engine.h"
-#include "HistoryRecorder.h"
+#include "SentenceManager.h"
 
 /*
 input: X
@@ -19,11 +19,15 @@ engine* createEngeine();
 
 /*
 input: X
-output : Memory-allocated histroyRecorder struct
-Allocate dynamic memory of histroyRecorder
+output : Memory-allocated sentenceManager struct
+Allocate dynamic memory of sentenceManager
 */
-histroyRecorder* createHistroyRecorder();
+sentenceData* createSentenceData();
+sentenceData* getSentenceDataHead();
+sentenceManager* createSentenceManager();
 
+
+char* createLine();
 /*
 input : X
 output : X

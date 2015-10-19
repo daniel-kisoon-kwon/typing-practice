@@ -14,6 +14,11 @@ ex) historyRecorder* HistoryRecorder;
 #include <stdio.h>
 #include "Engine.h"
 
+typedef struct sentenceData {
+	char* value;
+	sentenceData* pNext;
+}sentenceData;
+
 /*
 [] Consistence
 record : function pointer to use generateNumber() function

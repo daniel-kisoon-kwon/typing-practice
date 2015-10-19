@@ -1,8 +1,26 @@
 #include "HistoryRecorder.h"
 #include "ErrorDefine.h"
 
+static char* getLine(FILE *fp)
+{
+	char* line = (char*)malloc(sizeof(char) * 1);
+	char buf;
+	int lineLength = 1;
 
-int record(hint hint)
+	while (1)
+	{
+		buf = fgetc(fp);
+		if ('\n' == buf || feof(fp)) break;
+		lineLength++;
+
+		line = (char*)realloc(line, sizeof(char)*lineLength);
+		line[lineLength - 2] = buf;
+	}
+	line[lineLength - 1] = '\0';
+	return line;
+}
+
+int addSentence(char* sentence)
 {
 	FILE *fp = fopen("temp.txt", "a+");
 	if ( NULL == fp )
@@ -10,7 +28,21 @@ int record(hint hint)
 		printf("File open error!\n");
 		return ERR_FILE_OPEN_FAIL;
 	}
-	fprintf(fp, "[ %d%d%d ] %d Strike  %d Ball\n", hint.targetNumber / 100, (hint.targetNumber % 100) / 10, ((hint.targetNumber % 100) % 10) / 1, hint.strike, hint.ball);
+	sentence = fputs(sentence, fp);
+	fclose(fp);
+	return 0;
+}
+
+int loadSentence(char* sentence)
+{
+	FILE *fp = fopen("temp.txt", "rt");
+	if (NULL == fp)
+	{
+		printf("File open error!\n");
+		return ERR_FILE_OPEN_FAIL;
+	}
+	sentence = getLine(fp);
+
 	fclose(fp);
 	return 0;
 }
