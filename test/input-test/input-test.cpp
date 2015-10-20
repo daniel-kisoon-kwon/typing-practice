@@ -1,28 +1,29 @@
 #include<stdio.h>
 #include<conio.h>
+#include <windows.h>
+
 void Put_Password(int type);
+void gotoxy(int x, int y);
 int main()
 {
-	char pwd[9];
+	char pwd[100] = { 0, };
 	char c;
 	int i = 0;
 	int loop;
-
+	int temp = 0;
 	do
 	{
 		loop = 0;
-		for (i = 0; i<9; i++)
-		{
-			pwd[i] = 0;
-		}
-		i = 0;
-		printf("패스워드를 (~8자리) 입력하세요 : ");
-
+		printf("Sentence : ");
+		
 		while (1)
 		{
+			
 			pwd[i] = getch();
-
-			if (i >= 8)
+			
+			gotoxy(2, 4);
+			printf("typing number : %d", temp++);
+			if (i >= 99)
 			{
 				Put_Password(1);
 				loop = 1;
@@ -36,8 +37,9 @@ int main()
 			}
 			if (pwd[i] == '\b')
 			{
-				if (i>0 && i<9)
+				if (i>0 && i<100)
 				{
+					gotoxy(i+1, 3);
 					putch(pwd[i]);
 					putch(' ');
 					putch(pwd[i]);
@@ -46,6 +48,7 @@ int main()
 
 			}
 			else {
+				gotoxy(i+1, 3);
 				putchar(pwd[i]);
 				i++;
 			}
@@ -80,4 +83,10 @@ void Put_Password(int type)
 		printf("\n");
 	}
 
+}
+
+void gotoxy(int x, int y)
+{
+	COORD Pos = { x - 1, y - 1 };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
