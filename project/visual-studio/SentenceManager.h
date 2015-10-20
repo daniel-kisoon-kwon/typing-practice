@@ -29,7 +29,7 @@ typedef struct sentenceManager
 	int(*loadSentenceData)();
 	sentenceData*(*getSentenceData)(int index);
 	char*(*getLine)(FILE* fp);
-	int(*addSentence)(char* sentence);
+	int(*addSentenceData)(char* sentence);
 	void(*print)();
 }sentenceManager;
 

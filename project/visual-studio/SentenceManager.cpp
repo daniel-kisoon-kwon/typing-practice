@@ -1,11 +1,12 @@
 #include <stdlib.h>
+#include <string.h>
 #include "SentenceManager.h"
 #include "SystemManager.h"
 #include "ErrorDefine.h"
 
 int loadSentenceData()
 {
-	sentenceData* tmp = NULL;
+	sentenceData* tmp = getSentenceDataHead();
 	int i = 0;
 	FILE *fp = fopen("temp.txt", "rt");
 
@@ -15,9 +16,12 @@ int loadSentenceData()
 		return ERR_FILE_OPEN_FAIL;
 	}
 
-	for (tmp = getSentenceDataHead(); tmp; tmp = tmp->pNext)
+	while (NULL != tmp)
 	{
 		tmp->value = getLine(fp);
+		if(tmp->value[0] != '\0' )
+			tmp->pNext = createSentenceData();
+		tmp = tmp->pNext;
 	}
 	
 	fclose(fp);
@@ -58,17 +62,29 @@ static char* getLine(FILE* fp)
 	return line;
 }
 
-int addSentence(char* sentence)
+int addSentenceData(char* sentence)
 {
-	FILE *fp = fopen("temp.txt", "a+");
-	if (NULL == fp)
+	sentenceData* targetData = createSentenceData();
+	return setSentenceDataHead(targetData);
+}
+
+int modifySentenceData(int index, char* sentence)
+{
+	int i = 0;
+	sentenceData* targetData = getSentenceData(index);
+	targetData->value = (char*)realloc(targetData->value, sizeof(char)*strlen(sentence)+1);
+	for(i=0; i<=strlen(sentence)+1; i++)
 	{
-		printf("File open error!\n");
-		return ERR_FILE_OPEN_FAIL;
+		targetData->value[i] = sentence[i];
 	}
-	fputs(sentence, fp);
-	fclose(fp);
+
 	return 0;
+}
+
+int deleteSentenceData(int index)
+{
+	sentenceData* newData = createSentenceData();
+	return setSentenceDataHead(newData);
 }
 
 void print()
@@ -94,7 +110,7 @@ int initSentenceManager(sentenceManager* SentenceManager)
 	if (NULL == SentenceManager)
 		return ERR_NULL_POINTER;
 
-	SentenceManager->addSentence = addSentence;
+	SentenceManager->addSentenceData = addSentenceData;
 	SentenceManager->getLine = getLine;
 	SentenceManager->getSentenceData = getSentenceData;
 	SentenceManager->loadSentenceData = loadSentenceData;

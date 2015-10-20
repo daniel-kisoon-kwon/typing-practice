@@ -24,6 +24,7 @@ Allocate dynamic memory of sentenceManager
 */
 sentenceData* createSentenceData();
 sentenceData* getSentenceDataHead();
+int setSentenceDataHead(sentenceData* newData);
 sentenceManager* createSentenceManager();
 
 

@@ -26,28 +26,36 @@ engine* createEngeine()
 
 sentenceData* createSentenceData()
 {
-	if (NULL != SentenceDataHead)
-	{
-		//printf("SentenceData is already created!\n");
-		return SentenceDataHead;
-	}
-
-	SentenceDataHead = (sentenceData*)malloc(sizeof(sentenceData));
-	if (NULL == SentenceDataHead)
+	sentenceData* SentenceData = NULL;
+	
+	SentenceData = (sentenceData*)malloc(sizeof(sentenceData));
+	if (NULL == SentenceData)
 	{
 		printf("[Error] Memory allocation fail!\n");
 		exit(1);
 	}
-	SentenceDataHead->value = NULL;
-	SentenceDataHead->pNext = NULL;
-	//printf("Create sentenceData!\n");
+	SentenceData->value = NULL;
+	SentenceData->pNext = NULL;
+	
+	if(NULL == SentenceDataHead)
+		SentenceDataHead = SentenceData;
 
-	return SentenceDataHead;
+	//printf("Create sentenceData!\n");
+	return SentenceData;
 }
 
 sentenceData* getSentenceDataHead()
 {
 	return SentenceDataHead;
+}
+
+int setSentenceDataHead(sentenceData* newData)
+{
+	sentenceData* temp = SentenceDataHead;
+	SentenceDataHead = newData;
+	SentenceDataHead->pNext = temp;
+
+	return 0;
 }
 
 sentenceManager* createSentenceManager()
