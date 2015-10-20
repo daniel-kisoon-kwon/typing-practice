@@ -28,8 +28,9 @@ typedef struct sentenceManager
 {
 	int(*loadSentenceData)();
 	sentenceData*(*getSentenceData)(int index);
-	char*(*getLine)(FILE* fp);
 	int(*addSentenceData)(char* sentence);
+	int(*modifySentenceData)(int index, char* sentence);
+	int(*deleteSentenceData)(int index);
 	void(*print)();
 }sentenceManager;
 
@@ -38,4 +39,6 @@ input : typedef struct engine
 output : 0(success), non-zeror(error)
 Register function pointers
 */
+char* getLine(FILE* fp);
 int initSentenceManager(sentenceManager* SentenceManager);
+int deinitSentenceManager();

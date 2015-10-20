@@ -24,6 +24,16 @@ engine* createEngeine()
 	return Engine;
 }
 
+void destroyEngeine()
+{
+	if ( NULL != Engine )
+	{
+		free(Engine);
+		Engine = NULL;
+		//printf("Engine free complete!\n");
+	}
+}
+
 sentenceData* createSentenceData()
 {
 	sentenceData* SentenceData = NULL;
@@ -37,9 +47,6 @@ sentenceData* createSentenceData()
 	SentenceData->value = NULL;
 	SentenceData->pNext = NULL;
 	
-	if(NULL == SentenceDataHead)
-		SentenceDataHead = SentenceData;
-
 	//printf("Create sentenceData!\n");
 	return SentenceData;
 }
@@ -58,6 +65,23 @@ int setSentenceDataHead(sentenceData* newData)
 	return 0;
 }
 
+void destroySentenceData(sentenceData* SentenceData)
+{
+	if (NULL != SentenceData->value)
+	{
+		free(SentenceData->value);
+		SentenceData->value = NULL;
+		//printf("SentenceData->value free complete!\n");
+	}
+
+	if (NULL != SentenceData)
+	{
+		free(SentenceData);
+		SentenceData = NULL;
+		//printf("SentenceData free complete!\n");
+	}
+}
+
 sentenceManager* createSentenceManager()
 {
 	SentenceManager = (sentenceManager*)malloc(sizeof(sentenceManager));
@@ -67,14 +91,28 @@ sentenceManager* createSentenceManager()
 		exit(1);
 	}
 
-	SentenceManager->addSentence = NULL;
-	SentenceManager->getLine = NULL;
+	SentenceManager->addSentenceData = NULL;
 	SentenceManager->getSentenceData = NULL;
 	SentenceManager->loadSentenceData = NULL;
 	SentenceManager->print = NULL;
 	//printf("Create sentenceManager!\n");
 	
 	return SentenceManager;
+}
+
+void destroySentenceManager()
+{
+	if ( NULL != SentenceManager)
+	{
+		SentenceManager->addSentenceData = NULL;
+		SentenceManager->getSentenceData = NULL;
+		SentenceManager->loadSentenceData = NULL;
+		SentenceManager->print = NULL;
+		
+		free(SentenceManager);
+		SentenceManager = NULL;
+		//printf("SentenceManager free complete!\n");
+	}
 }
 
 char* createLine()
@@ -92,19 +130,18 @@ char* createLine()
 
 void freeMemory()
 {
-	if ( NULL != Engine )
-	{
-		free(Engine);
-		Engine = NULL;
-		//printf("Engine free complete!\n");
-	}
+	sentenceData* SentenceData = getSentenceDataHead();
 
-	if ( NULL != SentenceManager)
+	while (NULL != SentenceData)
 	{
-		free(SentenceManager);
-		SentenceManager = NULL;
-		//printf("SentenceManager free complete!\n");
-	}
+		sentenceData* temp = SentenceData;
+		SentenceData = SentenceData->pNext;
+		destroySentenceData(temp);
+	}	
+
+	destroyEngeine();
+	destroySentenceManager();
+	
 	//printf("Memory free complete!\n");
 }
 

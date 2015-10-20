@@ -17,6 +17,9 @@ Allocate dynamic memory of engine
 */
 engine* createEngeine();
 
+void destroyEngeine();
+
+
 /*
 input: X
 output : Memory-allocated sentenceManager struct
@@ -25,10 +28,19 @@ Allocate dynamic memory of sentenceManager
 sentenceData* createSentenceData();
 sentenceData* getSentenceDataHead();
 int setSentenceDataHead(sentenceData* newData);
+void destroySentenceData(sentenceData* SentenceData);
+
 sentenceManager* createSentenceManager();
+void destroySentenceManager();
+
+
+
+
+
 
 
 char* createLine();
+
 /*
 input : X
 output : X

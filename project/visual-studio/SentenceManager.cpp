@@ -28,22 +28,7 @@ int loadSentenceData()
 	return 0;
 }
 
-sentenceData* getSentenceData(int index)
-{
-	sentenceData* SentenceData = NULL;
-	int i = 0;
-
-	if (0 > index)
-		return NULL;
-
-	for (i = 0, SentenceData = getSentenceDataHead(); SentenceData; i++, SentenceData = SentenceData->pNext)
-		if(i == index)
-			return SentenceData;
-	
-	return SentenceData;
-}
-
-static char* getLine(FILE* fp)
+char* getLine(FILE* fp)
 {
 	char* line = createLine();
 	char buf;
@@ -62,9 +47,32 @@ static char* getLine(FILE* fp)
 	return line;
 }
 
+sentenceData* getSentenceData(int index)
+{
+	sentenceData* SentenceData = NULL;
+	int i = 0;
+
+	if (0 > index)
+		return NULL;
+
+	for (i = 0, SentenceData = getSentenceDataHead(); SentenceData; i++, SentenceData = SentenceData->pNext)
+		if(i == index)
+			return SentenceData;
+	
+	return SentenceData;
+}
+
 int addSentenceData(char* sentence)
 {
+	int i = 0;
 	sentenceData* targetData = createSentenceData();
+	
+	targetData->value = createLine();
+	targetData->value = (char*)realloc(targetData->value, sizeof(char)*strlen(sentence)+1);
+	
+	for(i=0; i<=strlen(sentence)+1; i++)
+		targetData->value[i] = sentence[i];
+	
 	return setSentenceDataHead(targetData);
 }
 
@@ -72,34 +80,63 @@ int modifySentenceData(int index, char* sentence)
 {
 	int i = 0;
 	sentenceData* targetData = getSentenceData(index);
+	
 	targetData->value = (char*)realloc(targetData->value, sizeof(char)*strlen(sentence)+1);
+	
 	for(i=0; i<=strlen(sentence)+1; i++)
-	{
 		targetData->value[i] = sentence[i];
-	}
-
+	
 	return 0;
 }
 
 int deleteSentenceData(int index)
 {
-	sentenceData* newData = createSentenceData();
-	return setSentenceDataHead(newData);
+	sentenceData* SentenceData = NULL;
+	sentenceData* targetToRemove = NULL;
+	int i = 0;
+
+	if (0 > index)
+		return ERR_INVALID_PARAMETER;
+	
+	if (index == 0)
+	{
+		SentenceData = getSentenceDataHead();
+		targetToRemove = SentenceData;
+		SentenceData = SentenceData->pNext;
+	}
+
+	for (i = 1, SentenceData = getSentenceDataHead(); SentenceData; i++, SentenceData = SentenceData->pNext)
+	{
+		if (i == index)
+		{
+			targetToRemove = SentenceData->pNext;
+			SentenceData->pNext = targetToRemove->pNext;
+			break;
+		}
+	}
+
+	destroySentenceData(targetToRemove);
+	return 0;
 }
 
 void print()
 {
-	sentenceData* SentenceData = NULL;
+	sentenceData* SentenceData = getSentenceDataHead();
 	int i = 0;
-	for (i = 0, SentenceData = getSentenceDataHead(); SentenceData; i++, SentenceData = SentenceData->pNext)
-		printf("%d. %s", i, SentenceData->value);
-	
+	while (NULL != SentenceData)
+	{
+		if(SentenceData->value[0] != '\0' )
+			printf("%d. %s\n", i, SentenceData->value);
+		SentenceData = SentenceData->pNext;
+		i++;
+	}
+
 	//printf("print Sentence\n");
 }
 
 int initSentenceManager(sentenceManager* SentenceManager)
 {
-	FILE* fp = fopen("temp.txt", "w+");
+	FILE* fp = fopen("temp.txt", "a+");
 	if (NULL == fp)
 	{
 		printf("File open error!\n");
@@ -109,12 +146,19 @@ int initSentenceManager(sentenceManager* SentenceManager)
 
 	if (NULL == SentenceManager)
 		return ERR_NULL_POINTER;
-
+	setSentenceDataHead( createSentenceData() );
 	SentenceManager->addSentenceData = addSentenceData;
-	SentenceManager->getLine = getLine;
+	SentenceManager->modifySentenceData = modifySentenceData;
+	SentenceManager->deleteSentenceData = deleteSentenceData;
 	SentenceManager->getSentenceData = getSentenceData;
 	SentenceManager->loadSentenceData = loadSentenceData;
 	SentenceManager->print = print;
 
+	return ERR_NONE;
+}
+
+int deinitSentenceManager()
+{
+	freeMemory();
 	return ERR_NONE;
 }
