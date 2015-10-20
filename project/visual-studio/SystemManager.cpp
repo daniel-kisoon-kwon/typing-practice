@@ -7,7 +7,6 @@
 engine* Engine = NULL;
 sentenceManager* SentenceManager = NULL;
 sentenceData* SentenceDataHead = NULL;
-char* Line = NULL;
 
 engine* createEngeine()
 {
@@ -117,7 +116,7 @@ void destroySentenceManager()
 
 char* createLine()
 {
-	Line = (char*)malloc(sizeof(char) * 1);
+	char* Line = (char*)malloc(sizeof(char) * 1);
 	if (NULL == Line)
 	{
 		printf("[Error] Memory allocation fail!\n");

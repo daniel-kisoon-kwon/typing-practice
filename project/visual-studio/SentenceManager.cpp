@@ -68,9 +68,9 @@ int addSentenceData(char* sentence)
 	sentenceData* targetData = createSentenceData();
 	
 	targetData->value = createLine();
-	targetData->value = (char*)realloc(targetData->value, sizeof(char)*strlen(sentence)+1);
+	targetData->value = (char*)realloc(targetData->value, sizeof(char)* (strlen(sentence)+1) );
 	
-	for(i=0; i<=strlen(sentence)+1; i++)
+	for (i = 0; i < strlen(sentence) + 1; i++)
 		targetData->value[i] = sentence[i];
 	
 	return setSentenceDataHead(targetData);
@@ -81,9 +81,9 @@ int modifySentenceData(int index, char* sentence)
 	int i = 0;
 	sentenceData* targetData = getSentenceData(index);
 	
-	targetData->value = (char*)realloc(targetData->value, sizeof(char)*strlen(sentence)+1);
+	targetData->value = (char*)realloc(targetData->value, sizeof(char)* (strlen(sentence)+1) );
 	
-	for(i=0; i<=strlen(sentence)+1; i++)
+	for (i = 0; i < strlen(sentence) + 1; i++)
 		targetData->value[i] = sentence[i];
 	
 	return 0;
