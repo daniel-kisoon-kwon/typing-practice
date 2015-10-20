@@ -7,7 +7,7 @@
 int loadSentenceData()
 {
 	sentenceData* tmp = getSentenceDataHead();
-	int i = 0;
+	int sentenceNumber = 0;
 	FILE *fp = fopen("temp.txt", "rt");
 
 	if (NULL == fp)
@@ -19,13 +19,17 @@ int loadSentenceData()
 	while (NULL != tmp)
 	{
 		tmp->value = getLine(fp);
-		if(tmp->value[0] != '\0' )
+		if (tmp->value[0] != '\0')
+		{
 			tmp->pNext = createSentenceData();
+			sentenceNumber++;
+		}
 		tmp = tmp->pNext;
+		
 	}
 	
 	fclose(fp);
-	return 0;
+	return sentenceNumber;
 }
 
 char* getLine(FILE* fp)
