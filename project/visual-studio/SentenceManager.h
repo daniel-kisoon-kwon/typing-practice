@@ -31,6 +31,7 @@ typedef struct sentenceManager
 	int(*addSentenceData)(char* sentence);
 	int(*modifySentenceData)(int index, char* sentence);
 	int(*deleteSentenceData)(int index);
+	int(*saveSentenceDataToFile)();
 	void(*print)();
 }sentenceManager;
 
@@ -41,4 +42,3 @@ Register function pointers
 */
 char* getLine(FILE* fp);
 int initSentenceManager(sentenceManager* SentenceManager);
-int deinitSentenceManager();

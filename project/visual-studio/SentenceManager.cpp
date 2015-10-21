@@ -138,6 +138,22 @@ void print()
 	//printf("print Sentence\n");
 }
 
+int saveSentenceDataToFile()
+{
+	FILE* fp = fopen("temp.txt","w+"); 
+	
+	sentenceData* SentenceData = getSentenceDataHead();
+
+	while (NULL != SentenceData)
+	{
+		fprintf(fp,"%s\n", SentenceData->value);
+		SentenceData = SentenceData->pNext;
+	}
+	fclose(fp);
+	printf("[save] Saved successfully\n");
+	return 0;
+}
+
 int initSentenceManager(sentenceManager* SentenceManager)
 {
 	FILE* fp = fopen("temp.txt", "a+");
@@ -157,12 +173,7 @@ int initSentenceManager(sentenceManager* SentenceManager)
 	SentenceManager->getSentenceData = getSentenceData;
 	SentenceManager->loadSentenceData = loadSentenceData;
 	SentenceManager->print = print;
+	SentenceManager->saveSentenceDataToFile = saveSentenceDataToFile;
 
-	return ERR_NONE;
-}
-
-int deinitSentenceManager()
-{
-	freeMemory();
 	return ERR_NONE;
 }
