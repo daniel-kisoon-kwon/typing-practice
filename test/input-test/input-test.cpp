@@ -1,88 +1,59 @@
-#include<stdio.h>
-#include<conio.h>
+#include <stdio.h>
+#include <conio.h>
+#include <time.h>
 #include <windows.h>
 
-void Put_Password(int type);
 void gotoxy(int x, int y);
 int main()
 {
 	char pwd[100] = { 0, };
-	char c;
 	int i = 0;
-	int loop;
-	int temp = 0;
-	do
-	{
-		loop = 0;
-		printf("Sentence : ");
-		
-		while (1)
-		{
-			
-			pwd[i] = getch();
-			
-			gotoxy(2, 4);
-			printf("typing number : %d", temp++);
-			if (i >= 99)
-			{
-				Put_Password(1);
-				loop = 1;
-				break;
-			}
+	bool needBreak = false;
+	int typingCount = 0;
+	int startTime = (int) time(NULL);
 
-			if (pwd[i] == '\r')
+	while (1)
+	{	
+		int typingSpeed = 0;
+		pwd[i] = getch();
+		typingCount++;
+		
+		typingSpeed = (int)((typingCount* 60) / ((time(NULL) - startTime) % 60));
+		//callback - return typing count(speed)
+		{
+			gotoxy(2, 2);
+			printf("typing number : %d typing/min", typingSpeed);
+		}
+
+		if (i >= 99)
+			needBreak = true;
+		else
+		{
+			gotoxy(i+1, 1);
+			switch (pwd[i])
 			{
-				pwd[i] = NULL;
+				case '\r':
+					needBreak = true;
 				break;
-			}
-			if (pwd[i] == '\b')
-			{
-				if (i>0 && i<100)
-				{
-					gotoxy(i+1, 3);
+				case '\b':
 					putch(pwd[i]);
 					putch(' ');
 					putch(pwd[i]);
 					i--;
-				}
-
-			}
-			else {
-				gotoxy(i+1, 3);
+				break;
+				default:
 				putchar(pwd[i]);
 				i++;
+				break;
 			}
 		}
-		if (i == 0)
+		if (needBreak)
 		{
-			Put_Password(2);
-			loop = 1;
+			pwd[i] = '\0';			
+			break;
 		}
-
-	} while (loop);
-	printf("\n \n\n %s\n", pwd);
+	}
 	return 0;
-}
-void Put_Password(int type)
-{
-	if (1 == type)
-	{
-		printf("\n");
-		printf("*********************************");
-		printf("\n");
-		printf("패스워드 입력범위를 벗어났습니다.\n입력범위는 8자리입니다.");
-		printf("\n");
-		printf("*********************************");
-		printf("\n");
-	}
-
-	if (2 == type)
-	{
-		printf("\n");
-		printf("입력값이 잘 못되었습니다.");
-		printf("\n");
-	}
-
 }
 
 void gotoxy(int x, int y)
