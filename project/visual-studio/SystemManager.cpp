@@ -4,34 +4,7 @@
 #include "SystemManager.h"
 #include "ErrorDefine.h"
 
-engine* Engine = NULL;
-sentenceManager* SentenceManager = NULL;
 sentenceData* SentenceDataHead = NULL;
-
-engine* createEngeine()
-{
-	Engine = (engine*)malloc(sizeof(engine));
-	if (NULL == Engine)
-	{
-		printf("[Error] Memory allocation fail!\n");
-		exit(1);
-	}
-	Engine->generateNumber = NULL;
-	Engine->checkAnswer = NULL;
-	//printf("Create Engine!\n");
-
-	return Engine;
-}
-
-void destroyEngeine()
-{
-	if ( NULL != Engine )
-	{
-		free(Engine);
-		Engine = NULL;
-		//printf("Engine free complete!\n");
-	}
-}
 
 sentenceData* createSentenceData()
 {
@@ -64,7 +37,7 @@ int setSentenceDataHead(sentenceData* newData)
 	return 0;
 }
 
-void destroySentenceData(sentenceData* SentenceData)
+void destroySentenceValue(sentenceData* SentenceData)
 {
 	if (NULL != SentenceData->value)
 	{
@@ -83,7 +56,7 @@ void destroySentenceData(sentenceData* SentenceData)
 
 sentenceManager* createSentenceManager()
 {
-	SentenceManager = (sentenceManager*)malloc(sizeof(sentenceManager));
+	sentenceManager* SentenceManager = (sentenceManager*)malloc(sizeof(sentenceManager));
 	if (NULL == SentenceManager)
 	{
 		printf("[Error] Memory allocation fail!\n");
@@ -99,7 +72,7 @@ sentenceManager* createSentenceManager()
 	return SentenceManager;
 }
 
-void destroySentenceManager()
+void destroySentenceManager(sentenceManager* SentenceManager)
 {
 	if ( NULL != SentenceManager)
 	{
@@ -111,6 +84,37 @@ void destroySentenceManager()
 		free(SentenceManager);
 		SentenceManager = NULL;
 		//printf("SentenceManager free complete!\n");
+	}
+}
+
+typingManager* createTypingManager()
+{
+	typingManager* TypingManager = (typingManager*)malloc(sizeof(typingManager));
+	if (NULL == TypingManager)
+	{
+		printf("[Error] Memory allocation fail!\n");
+		exit(1);
+	}
+
+	TypingManager->getAccuracy = NULL;
+	TypingManager->getTypingSpeed = NULL;
+	TypingManager->inputSentence = NULL;
+	//printf("Create TypingManager!\n");
+
+	return TypingManager;
+}
+
+void destroyTypingManager(typingManager* TypingManager)
+{
+	if (NULL != TypingManager)
+	{
+		TypingManager->getAccuracy = NULL;
+		TypingManager->getTypingSpeed = NULL;
+		TypingManager->inputSentence = NULL;
+
+		free(TypingManager);
+		TypingManager = NULL;
+		//printf("TypingManager free complete!\n");
 	}
 }
 
@@ -127,7 +131,17 @@ char* createLine()
 	return Line;
 }
 
-void freeMemory()
+void destroyLine(char* Line)
+{
+	if (NULL != Line)
+	{
+		free(Line);
+		Line = NULL;
+		//printf("Line free complete!\n");
+	}
+}
+
+void destroySentenceData()
 {
 	sentenceData* SentenceData = getSentenceDataHead();
 
@@ -135,13 +149,9 @@ void freeMemory()
 	{
 		sentenceData* temp = SentenceData;
 		SentenceData = SentenceData->pNext;
-		destroySentenceData(temp);
-	}	
-
-	destroyEngeine();
-	destroySentenceManager();
-	
-	//printf("Memory free complete!\n");
+		destroySentenceValue(temp);
+	}
+	SentenceDataHead = NULL;
 }
 
 void  scanfForAnswer(int* number)

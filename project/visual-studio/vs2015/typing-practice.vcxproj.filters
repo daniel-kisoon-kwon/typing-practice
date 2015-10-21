@@ -27,6 +27,9 @@
     <ClInclude Include="..\SystemManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\inc\TypingManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\SentenceManager.cpp">
@@ -35,10 +38,10 @@
     <ClCompile Include="..\SystemManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="..\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\LunchPlacePicker.cpp">
+    <ClCompile Include="..\..\..\src\TypingManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -119,7 +119,7 @@ int deleteSentenceData(int index)
 		}
 	}
 
-	destroySentenceData(targetToRemove);
+	destroySentenceValue(targetToRemove);
 	return 0;
 }
 

@@ -1,8 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <conio.h>
 #include <time.h>
 #include "TypingManager.h"
+#include "SystemManager.h"
 #include "ErrorDefine.h"
 
 int getTypingSpeed(int startTime, int typingCount)
@@ -12,61 +14,62 @@ int getTypingSpeed(int startTime, int typingCount)
 
 int getAccuracy(char* questionSentence, char* inputSentence)
 {
-	int faultChar = 0;
-	int inputSentenceLength = strlen(inputSentence) + 1;
+	int correctChar = 0;
+	int SentenceLength = strlen(questionSentence);
 	int i = 0;
 	
-	for(i = 0; i< inputSentenceLength; i++)
-		if(questionSentence[i] != inputSentence[i])
-			faultChar++;
+	for(i = 0; i< SentenceLength; i++)
+		if (('\0' != inputSentence[i]) && (questionSentence[i] == inputSentence[i]))
+			correctChar++;
 
-	return (int)((inputSentenceLength - faultChar) / inputSentenceLength) * 100;
+	return ((correctChar) * 100) / SentenceLength;
 }
 
-char* inputSentence(size_t sentenceLength)
+char* inputSentence(char* inputSentence)
 {
-	char pwd[100] = { 0, };
+	
 	int i = 0;
 	bool needBreak = false;
 	int typingCount = 0;
+	int inputSentenceLength = strlen(inputSentence)+1;
 	int startTime = (int) time(NULL);
 
 	while (1)
 	{	
 		int typingSpeed = 0;
-		pwd[i] = getch();
+		inputSentence[i] = getch();
 		typingCount++;
 		
 		typingSpeed = getTypingSpeed(startTime, typingCount);
 		
-		if (i >= 99)
+		if (i >= inputSentenceLength)
 			needBreak = true;
 		else
 		{
-			switch (pwd[i])
+			switch (inputSentence[i])
 			{
 				case '\r':
 					needBreak = true;
 				break;
 				case '\b':
-					putch(pwd[i]);
+					putch(inputSentence[i]);
 					putch(' ');
-					putch(pwd[i]);
+					putch(inputSentence[i]);
 					i--;
 				break;
 				default:
-				putchar(pwd[i]);
+				putchar(inputSentence[i]);
 				i++;
 				break;
 			}
 		}
 		if (needBreak)
 		{
-			pwd[i] = '\0';			
+			inputSentence[i] = '\0';
 			break;
 		}
 	}
-	return pwd;
+	return inputSentence;
 }
 
 int initTypingManager(typingManager* TypingManager)

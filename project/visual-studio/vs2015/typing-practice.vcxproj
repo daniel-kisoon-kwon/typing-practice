@@ -145,14 +145,15 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\inc\Engine.h" />
     <ClInclude Include="..\..\..\inc\ErrorDefine.h" />
+    <ClInclude Include="..\..\..\inc\TypingManager.h" />
     <ClInclude Include="..\SentenceManager.h" />
     <ClInclude Include="..\SystemManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\LunchPlacePicker.cpp" />
+    <ClCompile Include="..\..\..\src\TypingManager.cpp" />
+    <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\SentenceManager.cpp" />
     <ClCompile Include="..\SystemManager.cpp" />
-    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,7 +9,7 @@ typedef struct typingManager
 {
 	int(*getTypingSpeed)(int startTime, int typingCount);
 	int(*getAccuracy)(char* questionSentence, char* inputSentence);
-	char*(*inputSentence)(size_t sentenceLength);
+	char*(*inputSentence)(char* inputSentence);
 }typingManager;
 
 /*

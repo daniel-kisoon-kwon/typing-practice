@@ -9,16 +9,7 @@
 
 #include "Engine.h"
 #include "SentenceManager.h"
-
-/*
-input: X
-output : Memory-allocated engine struct
-Allocate dynamic memory of engine
-*/
-engine* createEngeine();
-
-void destroyEngeine();
-
+#include "TypingManager.h"
 
 /*
 input: X
@@ -28,25 +19,26 @@ Allocate dynamic memory of sentenceManager
 sentenceData* createSentenceData();
 sentenceData* getSentenceDataHead();
 int setSentenceDataHead(sentenceData* newData);
-void destroySentenceData(sentenceData* SentenceData);
+void destroySentenceValue(sentenceData* SentenceData);
 
 sentenceManager* createSentenceManager();
-void destroySentenceManager();
+void destroySentenceManager(sentenceManager* SentenceManager);
 
-
+typingManager* createTypingManager();
+void destroyTypingManager(typingManager* TypingManager);
 
 
 
 
 
 char* createLine();
-
+void destroyLine(char* Line);
 /*
 input : X
 output : X
 Free all allocated memories.
 */
-void freeMemory();
+void destroySentenceData();
 
 /*
 input : inteager pointer value
