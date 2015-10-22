@@ -1,13 +1,19 @@
-#include <stdio.h>
 #include <conio.h>
+#include <Windows.h>
 #include "TypingPracticeCallback.h"
 
-int getTypingSpeedCallback(CALLBACK pCallback,int n) 
-{ 
-   return pCallback(n); 
+int printTypingSpeed(CALLBACK pfn_Callback, int n)
+{
+	int i;
+
+	for (i = 0; i < n; i++)
+		printf("%d, ", pfn_Callback(i));
+	printf("\n");
+
+	return n;
 }
 
-int getTypingSpeedCallback(CALLBACK pCallback,int n) 
+int printInputSentence(CALLBACK pCallback,int n)
 { 
    return pCallback(n); 
 }

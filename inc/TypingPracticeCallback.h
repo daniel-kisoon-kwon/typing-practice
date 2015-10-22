@@ -1,7 +1,8 @@
 #pragma once
 
-typedef int (*CALLBACK)(int);
+#include <stdio.h>
+#include <Windows.h>
 
-int getTypingSpeedCallback(CALLBACK pCallback, int n);
-
-int getTypingAccuracyCallback(CALLBACK pCallback, int n);
+typedef void (*printSpeedCallback)(int speed);
+typedef void (*setInputPositionCallback)(short x);
+ 

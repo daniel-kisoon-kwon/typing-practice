@@ -3,7 +3,7 @@
 #include <string.h>
 #include <conio.h>
 #include <time.h>
-//#include <Windows.h>
+#include <Windows.h>
 #include "SentenceManager.h"
 #include "SystemManager.h"
 #include "TypingManager.h"
@@ -12,6 +12,8 @@ int typingPractice(typingManager* TypingManager, sentenceManager* SentenceManage
 int getRandomNumber(int totalSentenceNumber);
 void sentenceDataSetting(sentenceManager* SentenceManager);
 void saveNode(sentenceManager* SentenceManager);
+void printTypingSpeed(int speed);
+void setInputPosition(short x);
 //void gotoxy(int x, int y);
 
 int main(int argc, char* argv[])
@@ -78,14 +80,17 @@ int typingPractice(typingManager* TypingManager, sentenceManager* SentenceManage
 		int accuracy = 0;
 		system("cls");
 		
-		printf("%s\n", questionSentence); 
-		outputSentence = TypingManager->inputSentence(inputSentence, strlen(questionSentence));
+		printf("%s\n", questionSentence);
+		
+		outputSentence = TypingManager->inputSentence(printTypingSpeed, setInputPosition, inputSentence, strlen(questionSentence));
 		accuracy = TypingManager->getAccuracy(questionSentence, outputSentence);
 		free(outputSentence);
 
-		printf("\n\n [] Accuracy %d %%\n", accuracy);
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 5 });
+		printf(" [] Accuracy %d %%\n", accuracy);
 	
-		printf("\n [] Please anykey... (Ctrl+z for exit)\n");
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 7 });
+		printf(" [] Please anykey... (Ctrl+z for exit)\n");
 		if(getch() == 26) break;
 	}
 	return 0;
@@ -163,10 +168,24 @@ void saveNode(sentenceManager* SentenceManager)
 		saveNode(SentenceManager);
 	}
 }
-/*
-void gotoxy(int x, int y)
+
+void printTypingSpeed(int speed)
 {
-	COORD Pos = { x - 1, y - 1 };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
+	int i = 0;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 3 });
+	printf("\t\t\t\t\t\t\t\t\t\t");
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { 0, 3 });
+	for (i = 0; i < speed / 20; i++)
+	{
+		if (speed > 2000) continue;
+		printf("*");
+	}
+	printf("\n");
+	printf(" [] Typing Speed : %d typing/min\n", speed);
 }
-*/
+
+
+void setInputPosition(short x)
+{
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), { x, 1 });
+}

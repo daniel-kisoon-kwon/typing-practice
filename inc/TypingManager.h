@@ -1,5 +1,7 @@
-
 #pragma once
+
+#include "TypingPracticeCallback.h"
+
 /*
 [] Consistence
 record : function pointer to use generateNumber() function
@@ -9,7 +11,7 @@ typedef struct typingManager
 {
 	int(*getTypingSpeed)(time_t startTime, int typingCount);
 	int(*getAccuracy)(char* questionSentence, char* inputSentence);
-	char*(*inputSentence)(char* inputSentence, int length);
+	char*(*inputSentence)(printSpeedCallback printTypingSpeed, setInputPositionCallback setInputPosition, char* inputSentence, int length);
 }typingManager;
 
 /*

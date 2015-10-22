@@ -31,9 +31,8 @@ int getAccuracy(char* questionSentence, char* inputSentence)
 	return ((SentenceLength - fault) * 100) / SentenceLength;
 }
 
-char* inputSentence(char* inputSentence, int length)
+char* inputSentence(printSpeedCallback printTypingSpeed, setInputPositionCallback setInputPosition, char* inputSentence, int length)
 {
-	
 	int i = 0;
 	bool needBreak = false;
 	int typingCount = 0;
@@ -48,11 +47,14 @@ char* inputSentence(char* inputSentence, int length)
 		typingCount++;
 		
 		typingSpeed = getTypingSpeed(startTime, typingCount);
-		
+		if (NULL != printTypingSpeed)
+			printTypingSpeed(typingSpeed);
 		if (i >= length)
 			needBreak = true;
 		else
 		{
+			if (NULL != setInputPosition)
+				setInputPosition(i);
 			switch (c)
 			{
 				case '\n':
