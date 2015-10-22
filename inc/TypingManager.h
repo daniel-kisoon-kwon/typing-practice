@@ -7,7 +7,7 @@ print : funtion pointer to use checkAnswer() function
 */
 typedef struct typingManager
 {
-	int(*getTypingSpeed)(int startTime, int typingCount);
+	int(*getTypingSpeed)(time_t startTime, int typingCount);
 	int(*getAccuracy)(char* questionSentence, char* inputSentence);
 	char*(*inputSentence)(char* inputSentence, int length);
 }typingManager;

@@ -3,26 +3,32 @@
 #include <string.h>
 #include <conio.h>
 #include <time.h>
+
 #include "TypingManager.h"
 #include "SystemManager.h"
 #include "ErrorDefine.h"
-
-int getTypingSpeed(int startTime, int typingCount)
+int getTypingSpeed(time_t startTime, int typingCount)
 {
-	return (int)((typingCount* 60) / ((time(NULL) - startTime) % 60));
+	time_t endTime;
+	time_t tick = (time(&endTime) - startTime);
+	int ret = tick == 0 ? 0 : (int)((typingCount* 60) / (time(&endTime) - startTime));
+	return ret;
 }
 
 int getAccuracy(char* questionSentence, char* inputSentence)
 {
-	int correctChar = 0;
+	int fault = 0;
 	int SentenceLength = strlen(questionSentence);
 	int i = 0;
+	bool isSentenceEnd = false;
 	
 	for(i = 0; i< SentenceLength; i++)
-		if (('\0' != inputSentence[i]) && (questionSentence[i] == inputSentence[i]))
-			correctChar++;
-
-	return SentenceLength == 0 ? 0 : ((correctChar) * 100) / SentenceLength;
+	{
+		if ('\0' == inputSentence[i]) isSentenceEnd = true;
+		if (isSentenceEnd || (questionSentence[i] != inputSentence[i]))
+			fault++;
+	}
+	return ((SentenceLength - fault) * 100) / SentenceLength;
 }
 
 char* inputSentence(char* inputSentence, int length)
@@ -31,8 +37,9 @@ char* inputSentence(char* inputSentence, int length)
 	int i = 0;
 	bool needBreak = false;
 	int typingCount = 0;
-	int startTime = (int) time(NULL);
-	printf("length : %d\n", length);
+
+	time_t startTime;
+	time(&startTime);
 	while (1)
 	{	
 		int typingSpeed = 0;
@@ -40,7 +47,7 @@ char* inputSentence(char* inputSentence, int length)
 		inputSentence[i] = c;
 		typingCount++;
 		
-		//typingSpeed = getTypingSpeed(startTime, typingCount);
+		typingSpeed = getTypingSpeed(startTime, typingCount);
 		
 		if (i >= length)
 			needBreak = true;
@@ -73,7 +80,6 @@ char* inputSentence(char* inputSentence, int length)
 			break;
 		}
 	}
-	printf("[TM]inputSentence : %s\n", inputSentence);
 	return inputSentence;
 }
 

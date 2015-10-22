@@ -42,6 +42,7 @@ int main()
 					i--;
 				break;
 				default:
+					printf("\b");
 				putchar(pwd[i]);
 				i++;
 				break;

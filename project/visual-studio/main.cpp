@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <conio.h>
 #include <time.h>
-#include <Windows.h>
+//#include <Windows.h>
 #include "SentenceManager.h"
 #include "SystemManager.h"
 #include "TypingManager.h"
 
 int typingPractice(typingManager* TypingManager, sentenceManager* SentenceManager, int totalSentenceNumber);
-int pickRandomSentenceNumber(int totalSentenceNumber);
+int getRandomNumber(int totalSentenceNumber);
 void sentenceDataSetting(sentenceManager* SentenceManager);
 void saveNode(sentenceManager* SentenceManager);
-void gotoxy(int x, int y);
+//void gotoxy(int x, int y);
 
 int main(int argc, char* argv[])
 {
@@ -58,8 +60,8 @@ int main(int argc, char* argv[])
 			printf(" [] Invalid number\n");
 			break;
 		}
+		system("cls");
 		if (needBreak) break;
-		printf("\n");
 	}
 	
 	return 0;
@@ -67,24 +69,32 @@ int main(int argc, char* argv[])
 
 int typingPractice(typingManager* TypingManager, sentenceManager* SentenceManager, int totalSentenceNumber)
 {
-	char* questionSentence = (SentenceManager->getSentenceData(totalSentenceNumber))->value;
-	char* inputSentence = strdup(questionSentence);
-	char* outputSentence = NULL;
-	int accuracy = 0;
+	while(1)
+	{
+		int randumNumber = getRandomNumber(totalSentenceNumber);
+		char* questionSentence = (SentenceManager->getSentenceData(randumNumber))->value;
+		char* inputSentence = strdup(questionSentence);
+		char* outputSentence = NULL;
+		int accuracy = 0;
+		system("cls");
+		
+		printf("%s\n", questionSentence); 
+		outputSentence = TypingManager->inputSentence(inputSentence, strlen(questionSentence));
+		accuracy = TypingManager->getAccuracy(questionSentence, outputSentence);
+		free(outputSentence);
 
-	printf("%s\n", questionSentence); 
-	outputSentence = TypingManager->inputSentence(inputSentence, strlen(questionSentence));
-	accuracy = TypingManager->getAccuracy(questionSentence, outputSentence);
-	printf("Accuracy %d %%\n", accuracy);
+		printf("\n\n [] Accuracy %d %%\n", accuracy);
 	
-	free(outputSentence);
+		printf("\n [] Please anykey... (Ctrl+z for exit)\n");
+		if(getch() == 26) break;
+	}
 	return 0;
 }
 
-int pickRandomSentenceNumber(int totalSentenceNumber)
+int getRandomNumber(int totalSentenceNumber)
 {
 	srand(time(NULL));
-	return rand() % totalSentenceNumber;
+	return (rand() % totalSentenceNumber)+1;
 }
 
 
@@ -139,8 +149,8 @@ void saveNode(sentenceManager* SentenceManager)
 {
 	char ch;
 	printf(" [Save] Save Lunch place info to file(y/n)?");
-	scanf("%c", &ch);
-	clearEnter();
+	ch = getch();
+	printf("%c", ch);
 	if( 'y' == ch || 'Y' == ch)
 	{
 		printf(" [Save] Saving... \n");
@@ -153,9 +163,10 @@ void saveNode(sentenceManager* SentenceManager)
 		saveNode(SentenceManager);
 	}
 }
-
+/*
 void gotoxy(int x, int y)
 {
 	COORD Pos = { x - 1, y - 1 };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
+*/
