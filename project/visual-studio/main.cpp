@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 		printf(" [] input : ");
 		scanf("	 %d", &selectNum);
 		clearEnter();
-		system("cls");
+		
 		switch (selectNum)
 		{
 		case 1:
@@ -67,21 +67,17 @@ int main(int argc, char* argv[])
 
 int typingPractice(typingManager* TypingManager, sentenceManager* SentenceManager, int totalSentenceNumber)
 {
-	while (1)
-	{
-		int randomPickNumber = pickRandomSentenceNumber(totalSentenceNumber);
-		sentenceData* targetSentenceData = SentenceManager->getSentenceData(randomPickNumber);
-		char* questionSentence = targetSentenceData->value;
-		char* inputSentence = createLine();
-		char* outputSentence = NULL;
+	char* questionSentence = (SentenceManager->getSentenceData(totalSentenceNumber))->value;
+	char* inputSentence = strdup(questionSentence);
+	char* outputSentence = NULL;
+	int accuracy = 0;
 
-		inputSentence = (char*)realloc(inputSentence, sizeof(char)*(strlen(questionSentence) + 1));
-		printf("%s\n", questionSentence);
-		outputSentence = TypingManager->inputSentence(inputSentence);
-		printf("\nAccuracy : %d %% \n", TypingManager->getAccuracy(questionSentence, outputSentence));
-		destroyLine(inputSentence);
-		
-	}
+	printf("%s\n", questionSentence); 
+	outputSentence = TypingManager->inputSentence(inputSentence, strlen(questionSentence));
+	accuracy = TypingManager->getAccuracy(questionSentence, outputSentence);
+	printf("Accuracy %d %%\n", accuracy);
+	
+	free(outputSentence);
 	return 0;
 }
 

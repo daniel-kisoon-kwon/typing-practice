@@ -27,7 +27,7 @@ int loadSentenceData()
 		tmp = tmp->pNext;
 		
 	}
-	
+	//printf("sentenceNumber : %d\n", sentenceNumber);
 	fclose(fp);
 	return sentenceNumber;
 }
@@ -54,12 +54,12 @@ char* getLine(FILE* fp)
 sentenceData* getSentenceData(int index)
 {
 	sentenceData* SentenceData = NULL;
-	int i = 0;
+	int i = 1;
 
-	if (0 > index)
+	if (1 > index)
 		return NULL;
 
-	for (i = 0, SentenceData = getSentenceDataHead(); SentenceData; i++, SentenceData = SentenceData->pNext)
+	for (i = 1, SentenceData = getSentenceDataHead(); SentenceData; i++, SentenceData = SentenceData->pNext)
 		if(i == index)
 			return SentenceData;
 	

@@ -22,44 +22,48 @@ int getAccuracy(char* questionSentence, char* inputSentence)
 		if (('\0' != inputSentence[i]) && (questionSentence[i] == inputSentence[i]))
 			correctChar++;
 
-	return ((correctChar) * 100) / SentenceLength;
+	return SentenceLength == 0 ? 0 : ((correctChar) * 100) / SentenceLength;
 }
 
-char* inputSentence(char* inputSentence)
+char* inputSentence(char* inputSentence, int length)
 {
 	
 	int i = 0;
 	bool needBreak = false;
 	int typingCount = 0;
-	int inputSentenceLength = strlen(inputSentence)+1;
 	int startTime = (int) time(NULL);
-
+	printf("length : %d\n", length);
 	while (1)
 	{	
 		int typingSpeed = 0;
-		inputSentence[i] = getch();
+		char c = getch();
+		inputSentence[i] = c;
 		typingCount++;
 		
-		typingSpeed = getTypingSpeed(startTime, typingCount);
+		//typingSpeed = getTypingSpeed(startTime, typingCount);
 		
-		if (i >= inputSentenceLength)
+		if (i >= length)
 			needBreak = true;
 		else
 		{
-			switch (inputSentence[i])
+			switch (c)
 			{
+				case '\n':
 				case '\r':
 					needBreak = true;
 				break;
 				case '\b':
-					putch(inputSentence[i]);
-					putch(' ');
-					putch(inputSentence[i]);
-					i--;
+	                if (i>0 && i<length)
+					{
+						putch(inputSentence[i]);
+						putch(' ');
+						putch(inputSentence[i]);
+						i--;
+					}
 				break;
 				default:
-				putchar(inputSentence[i]);
-				i++;
+					putchar(inputSentence[i]);
+					i++;
 				break;
 			}
 		}
@@ -69,6 +73,7 @@ char* inputSentence(char* inputSentence)
 			break;
 		}
 	}
+	printf("[TM]inputSentence : %s\n", inputSentence);
 	return inputSentence;
 }
 

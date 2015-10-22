@@ -21,10 +21,10 @@
     <ClCompile Include="..\SentenceManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="..\..\..\src\TypingManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\TypingManager.cpp">
+    <ClCompile Include="..\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
